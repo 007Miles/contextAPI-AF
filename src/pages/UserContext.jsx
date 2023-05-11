@@ -26,20 +26,61 @@ const initialUsers = {
       borrowedBooks: ["1984", "The Great Gatsby"]
     }
   ],
+  selectedUser: null,
 }
 
+const usersReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_USER":
+      return {
+        ...state,
+        users: [...state.users, action.payload],
+      };
+    case "UPDATE_USER":
+      const updatedUsers = state.users.map((user) => {
+        if (user.id === action.payload.id) {
+          return { ...user, ...action.payload };
+        }
+        return user;
+      });
+      return {
+        ...state,
+        users: updatedUsers,
+      };
+    case "DELETE_USER":
+      const filteredUsers = state.users.filter(
+        (user) => user.id !== action.payload
+      );
+      return {
+        ...state,
+        users: filteredUsers,
+      };
+    case "SELECT_USER":
+      return {
+        ...state,
+        selectedUser: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
 const UserProvider = ({ children }) => {
-  // const [state, dispatch] = useReducer(booksReducer, initialState);
+  const [state, dispatch] = useReducer(usersReducer, initialUsers);
   const [user, setUser] = useState([])
 
+  // useEffect(() => {
+  //   setUser(initialUsers.users)
+  // }, [user])
+
   useEffect(() => {
-    setUser(initialUsers.users)
-  }, [user])
+    setUser(state.users);
+  }, [state.users]);
 
   console.log(user);
 
   return (
-    <UserContext.Provider value={{ user }}>
+    <UserContext.Provider value={{ user: state.users, dispatch }}>
       {children}
     </UserContext.Provider>
   );

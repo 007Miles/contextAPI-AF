@@ -22,6 +22,11 @@ function Book() {
           <u>Book Page</u>
         </h1>
       </div>
+      <div>
+        <Link to={`/book/add`}>
+          <button>Add New Book</button>
+        </Link>
+      </div>
       <BooksProvider>
         <div>
           <BookList />

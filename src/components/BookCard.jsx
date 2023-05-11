@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
-
-// const deleteProductUrl = 'http://localhost:3008/api/v1/products'
+import { BooksContext } from "../pages/Context";
 
 const BookCard = ({
     id,
@@ -12,16 +10,13 @@ const BookCard = ({
   availableCopies,
 }) => {
 
+  const { dispatch } = useContext(BooksContext);
 
-  const deleteBook = async () => {
-    try {
-      const resp = await axios.delete(`https://www.examples.com/${id}`)
-      alert('Book Deleted Successfully')
-      console.log(resp.data)
-    } catch (error) {
-      alert('Sorry! Book Deletion Failed...')
-      console.log(error.response)
-    }
+  const deleteBook = () => {
+    dispatch({
+      type: "DELETE_BOOK",
+      payload: id,
+    });
   }
 
 //   console.log(name, writer, date, copies);
@@ -49,7 +44,8 @@ const bookData = {
             </button>
           </div>
         </Link>
-        <Link to={`/book/update/${id}`}>
+        <Link to={`/book/update/${id}`}
+        state={{id,title,author,publicationDate,availableCopies}}>
           <div>
             <button>
             Edit Book
@@ -59,7 +55,6 @@ const bookData = {
         <div
           onClick={() => {
             deleteBook()
-            window.location.reload(true)
           }}
         >
             <button>

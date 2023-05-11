@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { useGlobalContext } from "./Context";
 
 function BookDetail() {
   const location = useLocation()

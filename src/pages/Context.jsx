@@ -27,63 +27,59 @@ const initialState = {
   selectedBook: null,
 };
 
-// const booksReducer = (state, action) => {
-//   switch (action.type) {
-//     case 'SET_BOOKS':
-//       return { ...state, books: action.payload };
-//     case 'ADD_BOOK':
-//       return { ...state, books: [...state.books, action.payload] };
-//     case 'UPDATE_BOOK':
-//       const updatedBooks = state.books.map((book) =>
-//         book.id === action.payload.id ? action.payload : book
-//       );
-//       return { ...state, books: updatedBooks };
-//     case 'DELETE_BOOK':
-//       const filteredBooks = state.books.filter(
-//         (book) => book.id !== action.payload
-//       );
-//       return { ...state, books: filteredBooks };
-//     case 'SELECT_BOOK':
-//       return { ...state, selectedBook: action.payload };
-//     case 'BORROW_BOOK':
-//       const borrowedBook = state.books.find(
-//         (book) => book.id === action.payload.bookId
-//       );
-//       borrowedBook.copies--;
-//       borrowedBook.borrowers.push(action.payload.userId);
-//       const updatedBorrowedBooks = state.books.map((book) =>
-//         book.id === borrowedBook.id ? borrowedBook : book
-//       );
-//       return { ...state, books: updatedBorrowedBooks };
-//     case 'RETURN_BOOK':
-//       const returnedBook = state.books.find(
-//         (book) => book.id === action.payload.bookId
-//       );
-//       returnedBook.copies++;
-//       returnedBook.borrowers = returnedBook.borrowers.filter(
-//         (borrower) => borrower !== action.payload.userId
-//       );
-//       const updatedReturnedBooks = state.books.map((book) =>
-//         book.id === returnedBook.id ? returnedBook : book
-//       );
-//       return { ...state, books: updatedReturnedBooks };
-//     default:
-//       return state;
-//   }
-// };
+const booksReducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_BOOK":
+      return {
+        ...state,
+        books: [...state.books, action.payload],
+      };
+    case "UPDATE_BOOK":
+      const updatedBooks = state.books.map((book) => {
+        if (book.id === action.payload.id) {
+          return { ...book, ...action.payload };
+        }
+        return book;
+      });
+      return {
+        ...state,
+        books: updatedBooks,
+      };
+    case "DELETE_BOOK":
+      const filteredBooks = state.books.filter(
+        (book) => book.id !== action.payload
+      );
+      return {
+        ...state,
+        books: filteredBooks,
+      };
+    case "SELECT_BOOK":
+      return {
+        ...state,
+        selectedBook: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
 
 const BooksProvider = ({ children }) => {
-  // const [state, dispatch] = useReducer(booksReducer, initialState);
+  const [state, dispatch] = useReducer(booksReducer, initialState);
   const [book, setBook] = useState([])
 
+  // useEffect(() => {
+  //   setBook(initialState.books)
+  // }, [book])
+
   useEffect(() => {
-    setBook(initialState.books)
-  }, [book])
+    setBook(state.books);
+  }, [state.books]);
 
   console.log(book);
 
   return (
-    <BooksContext.Provider value={{ book }}>
+    <BooksContext.Provider value={{ book: state.books, dispatch }}>
       {children}
     </BooksContext.Provider>
   );
