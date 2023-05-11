@@ -1,57 +1,57 @@
 import React, { useState, useContext } from "react";
-import { BooksContext } from "../pages/Context";
+import { UserContext } from "../pages/UserContext";
 
 const AddUser = () => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [publicationDate, setPublicationDate] = useState("");
-  const [availableCopies, setAvailableCopies] = useState("");
-  const { dispatch } = useContext(BooksContext);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [borrowedBooks, setBorrowedBooks] = useState("");
+  const { dispatch } = useContext(UserContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newBook = {
+    const newUser = {
       id: parseInt(Math.random() * 1000000), // generate a random ID
-      title,
-      author,
-      publicationDate,
-      availableCopies: Number(availableCopies), // convert to number
+      name,
+      email,
+      phoneNumber,
+      borrowedBooks, 
     };
-    dispatch({ type: "ADD_BOOK", payload: newBook });
-    setTitle("");
-    setAuthor("");
-    setPublicationDate("");
-    setAvailableCopies("");
-    alert(`"${title}" Book Successfully Added...`)
+    dispatch({ type: "ADD_USER", payload: newUser });
+    setName("");
+    setEmail("");
+    setPhoneNumber("");
+    setBorrowedBooks("");
+    alert(`New User "${name}" Successfully Added...`)
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
       <input
         type="text"
-        placeholder="Author"
-        value={author}
-        onChange={(e) => setAuthor(e.target.value)}
+        placeholder="E-mail"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="tel"
+        placeholder="Phone Number"
+        value={phoneNumber}
+        onChange={(e) => setPhoneNumber(e.target.value)}
       />
       <input
         type="text"
-        placeholder="Publication Date"
-        value={publicationDate}
-        onChange={(e) => setPublicationDate(e.target.value)}
+        placeholder="Books Borrowed"
+        value={borrowedBooks}
+        onChange={(e) => setBorrowedBooks(e.target.value)}
       />
-      <input
-        type="number"
-        placeholder="Available Copies"
-        value={availableCopies}
-        onChange={(e) => setAvailableCopies(e.target.value)}
-      />
-      <button type="submit">Add Book</button>
+      <button type="submit">Add User</button>
     </form>
   );
 };

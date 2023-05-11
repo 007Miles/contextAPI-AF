@@ -22,6 +22,11 @@ function User() {
         <u>User Page</u>
       </h1>
     </div>
+    <div>
+        <Link to={`/user/add`}>
+          <button>Add New User</button>
+        </Link>
+      </div>
     <UserProvider>
       <div>
         <UserList />

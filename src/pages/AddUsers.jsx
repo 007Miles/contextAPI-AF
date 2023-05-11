@@ -1,9 +1,9 @@
 import React from "react";
-import AddBook from "../components/AddBook";
-import { BooksProvider } from "./Context";
+import AddUser from "../components/AddUser";
+import { UserProvider } from "./UserContext";
 import { Link } from "react-router-dom";
 
-const AddBooks = () => {
+const AddUsers = () => {
   return (
     <main>
         <div>
@@ -18,15 +18,15 @@ const AddBooks = () => {
         </Link>
       </div>
     <div>
-        <h1><u>Add A New Book</u></h1>
+        <h1><u>Add A New User</u></h1>
     </div>
-    <BooksProvider>
+    <UserProvider>
       <div>
-        <AddBook />
+        <AddUser />
       </div>
-    </BooksProvider>
+    </UserProvider>
     </main>
   );
 };
 
-export default AddBooks;
+export default AddUsers;

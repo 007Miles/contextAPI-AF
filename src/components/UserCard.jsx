@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
-
-// const deleteProductUrl = 'http://localhost:3008/api/v1/products'
+import { UserContext } from '../pages/UserContext'
 
 const UserCard = ({
     id,
@@ -12,16 +10,13 @@ const UserCard = ({
   borrowedBooks,
 }) => {
 
+  const { dispatch } = useContext(UserContext);
 
-  const deleteUser = async () => {
-    try {
-      const resp = await axios.delete(`https://www.examples.com/${id}`)
-      alert('User Deleted Successfully')
-      console.log(resp.data)
-    } catch (error) {
-      alert('Sorry! User Deletion Failed...')
-      console.log(error.response)
-    }
+  const deleteUser = () => {
+    dispatch({
+      type: "DELETE_USER",
+      payload: id,
+    });
   }
 
 
@@ -39,7 +34,8 @@ const UserCard = ({
             </button>
           </div>
         </Link>
-        <Link to={`/user/update/${id}`}>
+        <Link to={`/user/update/${id}`}
+        state={{id,name,email,phoneNumber,borrowedBooks}}>
           <div>
             <button>
             Edit User
@@ -49,7 +45,6 @@ const UserCard = ({
         <div
           onClick={() => {
             deleteUser()
-            window.location.reload(true)
           }}
         >
             <button>
